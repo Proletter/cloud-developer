@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+const fs = require('fs');
+const path = require('path');
 
 (async () => {
 
@@ -27,14 +29,32 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
-  app.get( "/", async ( req: string, res:any ) => {
+  app.get( "/filteredimage", async ( req: string, res:any ) => {
     const {image_url} = req.query
     if (!image_url){
        return  res.send("no image url specified")
     }
-    const filteredImage = filterImageFromURL(image_url)
+    const filteredImage = await filterImageFromURL(image_url)
     res.sendFile(filteredImage)
-    deleteLocalFiles(["./"])
+
+    //set default path for deletion to tmp file path
+    const filePath = path.join(__dirname, '/util/tmp');
+    // get a list of all files in file path
+    fs.readdir(filePath, function (err, files) {
+      if (err) {
+        res.send('An error occured while deleting server files', err);
+      } else {
+        // temp list of all paths to files in tmp directory
+        let filesPathsTmp = []
+        files.forEach(file => {
+          filesPathsTmp.push(path.resolve(filePath, file));       
+        });
+        // delete all fils in file path
+        deleteLocalFiles(filesPathsTmp)
+      }
+    });
+
+    // 
   } );
 
   /**************************************************************************** */
