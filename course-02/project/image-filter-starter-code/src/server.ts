@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import { any } from 'bluebird';
 const fs = require('fs');
 const path = require('path');
 
@@ -29,7 +30,7 @@ const path = require('path');
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
-  app.get( "/filteredimage", async ( req: string, res:any ) => {
+  app.get( "/filteredimage", async ( req: any, res:any ) => {
     const {image_url} = req.query
     if (!image_url){
        return  res.send("no image url specified")
@@ -40,13 +41,13 @@ const path = require('path');
     //set default path for deletion to tmp file path
     const filePath = path.join(__dirname, '/util/tmp');
     // get a list of all files in file path
-    fs.readdir(filePath, function (err, files) {
+    fs.readdir(filePath, function (err:any, files:string[]) {
       if (err) {
         res.send('An error occured while deleting server files', err);
       } else {
         // temp list of all paths to files in tmp directory
-        let filesPathsTmp = []
-        files.forEach(file => {
+        let filesPathsTmp:string[] = []
+        files.forEach((file: string) => {
           filesPathsTmp.push(path.resolve(filePath, file));       
         });
         // delete all fils in file path
