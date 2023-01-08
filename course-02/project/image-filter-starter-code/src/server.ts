@@ -30,20 +30,20 @@ const path = require('path');
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
-  app.get( "/filteredimage", async ( req: any, res:any ) => {
-    const {image_url} = req.query
+  app.get( "/filteredimage", async ( req: object, res:object ) => {
+    const image_url: string = req.query.image_url
     if (!image_url){
-       return  res.send("no image url specified")
+       return  res.status(400).send("no image url specified")
     }
-    const filteredImage = await filterImageFromURL(image_url)
-    res.sendFile(filteredImage)
+    const filteredImage: string = await filterImageFromURL(image_url)
+    res.status(200).sendFile(filteredImage)
 
     //set default path for deletion to tmp file path
-    const filePath = path.join(__dirname, '/util/tmp');
+    const filePath: string = path.join(__dirname, '/util/tmp');
     // get a list of all files in file path
-    fs.readdir(filePath, function (err:any, files:string[]) {
+    fs.readdir(filePath, function (err:string, files:string[]) {
       if (err) {
-        res.send('An error occured while deleting server files', err);
+        res.status(400).send('An error occured while deleting server files', err);
       } else {
         // temp list of all paths to files in tmp directory
         let filesPathsTmp:string[] = []
