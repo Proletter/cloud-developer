@@ -18,7 +18,7 @@ export const handler = middy(
 
       return {
         statusCode: 204,
-        body: JSON.stringify({})
+        body: ''
       }
     } catch (error) {
       return {

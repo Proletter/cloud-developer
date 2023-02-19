@@ -61,6 +61,6 @@ export async function getAllTodoById(todoId: string) {
 
 // create attachment presigned url function
 export async function createAttachmentPresignedUrl(todoId: string, userId: string): Promise<string> {
-  logger.info("create attachment url call by:", userId)
-  return await attachmentUtils.getUploadUrl(todoId)
+  logger.info("create attachment url called by:", userId, todoId)
+  return attachmentUtils.getUploadUrl(todoId)
 }

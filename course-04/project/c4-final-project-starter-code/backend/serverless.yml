@@ -25,7 +25,6 @@ provider:
     ATTACHMENT_S3_BUCKET: udacity-oluwaseun-serverless-todos-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     INDEX_NAME : ${self.provider.environment.TODOS_CREATED_AT_INDEX}
-    AUTH_0_SECRET_ID: zaw_EvnDUDXOD_wv05KOpG5IbSoa31LtIK9G_oVwi1kdGuuCPC81_Q_LHrP6AIKd
 
 
   logs:

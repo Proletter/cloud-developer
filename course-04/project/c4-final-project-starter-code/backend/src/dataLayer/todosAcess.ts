@@ -60,7 +60,7 @@ async  updateTodos(userId: string, todoId: string, todoUpdate: UpdateTodoRequest
             ':dueDate': todoUpdate.dueDate,
             ':done': todoUpdate.done
         },
-        ReturnValues: 'UPDATED_NEW'
+        ReturnValues: 'ALL_NEW'
 
     }).promise()
     logger.info('todo item updated')
