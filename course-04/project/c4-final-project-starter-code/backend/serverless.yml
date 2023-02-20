@@ -9,6 +9,7 @@ plugins:
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
   - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
 
 provider:
   name: aws
@@ -39,6 +40,19 @@ provider:
               - xray:PutTelemetryRecords
               - xray:PutTraceSegments
             Resource: '*'
+
+
+custom:
+  documentaton:
+    api: 
+      info:
+        version: v1.0.0
+        title: Todoapp API
+        description: Serverless application for todo app
+    models:
+      - name: TodoRequest
+        contentType: application/json
+        schema: ${file(models/create-todo-model.json)}
 
 functions:
   Auth:
@@ -77,6 +91,12 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new todo
+            description: Create a new todo
+            requestModels:
+              'application/json': TodoRequest
           request:
             schemas:
               application/json: ${file(models/create-todo-model.json)}
